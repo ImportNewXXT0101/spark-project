@@ -2,7 +2,6 @@ package com.xxt.sparkproject.util;
 
 /**
  * 字符串工具类
- *
  */
 public class StringUtils {
 

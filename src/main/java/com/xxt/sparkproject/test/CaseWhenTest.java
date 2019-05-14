@@ -44,7 +44,7 @@ public class CaseWhenTest {
 		DataFrame gradeLevelDF = sqlContext.sql(
 				"SELECT CASE "
 					+ "WHEN grade>=90 THEN 'A' "
-					+ "WHEN grade>=80 THEN 'B' "
+					+ "  "
 					+ "WHEN grade>=70 THEN 'C' "
 					+ "WHEN grade>=60 THEN 'D' "
 					+ "ELSE 'E' "

@@ -6,27 +6,15 @@ import org.apache.spark.AccumulatorParam;
 import com.xxt.sparkproject.constant.Constants;
 
 /**
- * session聚合统计Accumulator
- * 
- * 大家可以看到
- * 其实使用自己定义的一些数据格式，比如String，甚至说，我们可以自己定义model，自己定义的类（必须可序列化）
- * 然后呢，可以基于这种特殊的数据格式，可以实现自己复杂的分布式的计算逻辑
- * 各个task，分布式在运行，可以根据你的需求，task给Accumulator传入不同的值
- * 根据不同的值，去做复杂的逻辑
- * 
- * Spark Core里面很实用的高端技术
- * 
- * @author Administrator
- *
+ * session聚合统计自定义 Accumulator
  */
 public class SessionAggrStatAccumulator implements AccumulatorParam<String> {
 
 	private static final long serialVersionUID = 6311074555136039130L;
 	
 	/**
-	 * zero方法，其实主要用于数据的初始化
-	 * 那么，我们这里，就返回一个值，就是初始化中，所有范围区间的数量，都是0
-	 * 各个范围区间的统计数量的拼接，还是采用一如既往的key=value|key=value的连接串的格式
+	 * zero方法 主要用于数据的初始化
+	 * 采用 key=value|key=value的连接串的格式
 	 */
 	@Override
 	public String zero(String v) {
@@ -54,7 +42,6 @@ public class SessionAggrStatAccumulator implements AccumulatorParam<String> {
 	 * 
 	 * 这两个方法，其实主要就是实现，v1可能就是我们初始化的那个连接串
 	 * v2，就是我们在遍历session的时候，判断出某个session对应的区间，然后会用Constants.TIME_PERIOD_1s_3s
-	 * 所以，我们，要做的事情就是
 	 * 在v1中，找到v2对应的value，累加1，然后再更新回连接串里面去
 	 * 
 	 */
@@ -66,8 +53,8 @@ public class SessionAggrStatAccumulator implements AccumulatorParam<String> {
 	@Override
 	public String addAccumulator(String v1, String v2) {
 		return add(v1, v2);
-	}  
-	
+	}
+
 	/**
 	 * session统计计算逻辑
 	 * @param v1 连接串
