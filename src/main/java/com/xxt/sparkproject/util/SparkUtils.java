@@ -65,8 +65,8 @@ public class SparkUtils {
 	 * @param taskParam
 	 * @return
 	 */
-	public static JavaRDD<Row> getActionRDDByDateRange(
-			SQLContext sqlContext, JSONObject taskParam) {
+	public static JavaRDD<Row> getActionRDDByDateRange(SQLContext sqlContext, JSONObject taskParam) {
+
 		String startDate = ParamUtils.getParam(taskParam, Constants.PARAM_START_DATE);
 		String endDate = ParamUtils.getParam(taskParam, Constants.PARAM_END_DATE);
 		

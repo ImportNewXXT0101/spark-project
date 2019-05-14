@@ -69,8 +69,7 @@ import com.xxt.sparkproject.util.ValidUtils;
  * 6、搜索词：多个搜索词，只要某个session中的任何一个action搜索过指定的关键词，那么session就符合条件
  * 7、点击品类：多个品类，只要某个session中的任何一个action点击过某个品类，那么session就符合条件
  * 
- * 我们的spark作业如何接受用户创建的任务？
- * 
+ *
  * J2EE平台在接收用户创建任务的请求之后，
  * 会将任务信息插入MySQL的task表中，任务参数以JSON格式封装在task_param
  * 字段中
@@ -79,12 +78,8 @@ import com.xxt.sparkproject.util.ValidUtils;
  * spark-submit shell脚本，在执行时，是可以接收参数的，并且会将接收的参数，传递给Spark作业的main函数
  * 参数就封装在main函数的args数组中
  * 
- * 这是spark本身提供的特性
- * 
- * @author Administrator
- *
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class UserVisitSessionAnalyzeSpark {
 	
 	public static void main(String[] args) {
@@ -109,7 +104,6 @@ public class UserVisitSessionAnalyzeSpark {
 		 * 比如，获取top10热门品类功能中，二次排序，自定义了一个Key
 		 * 那个key是需要在进行shuffle的时候，进行网络传输的，因此也是要求实现序列化的
 		 * 启用Kryo机制以后，就会用Kryo去序列化和反序列化CategorySortKey
-		 * 所以这里要求，为了获取最佳性能，注册一下我们自定义的类
 		 */
 		
 		JavaSparkContext sc = new JavaSparkContext(conf);
@@ -122,9 +116,8 @@ public class UserVisitSessionAnalyzeSpark {
 		// 创建需要使用的DAO组件
 		ITaskDAO taskDAO = DAOFactory.getTaskDAO();
 		
-		// 首先得查询出来指定的任务，并获取任务的查询参数
-		long taskid = 
-				ParamUtils.getTaskIdFromArgs(
+		// 1. 先查询出来指定的任务，并获取任务的查询参数
+		long taskid = ParamUtils.getTaskIdFromArgs(
 						args, Constants.SPARK_LOCAL_TASKID_SESSION);
 		Task task = taskDAO.findById(taskid);
 		if(task == null) {
@@ -134,12 +127,12 @@ public class UserVisitSessionAnalyzeSpark {
 		
 		JSONObject taskParam = JSONObject.parseObject(task.getTaskParam());
 		
-		// 如果要进行session粒度的数据聚合
-		// 首先要从user_visit_action表中，查询出来指定日期范围内的行为数据
+		// 2. 进行session粒度的数据聚合
+		//    从user_visit_action表中，查询出来指定日期范围内的行为数据
 		
 		/**
 		 * actionRDD，就是一个公共RDD
-		 * 第一，要用ationRDD，获取到一个公共的sessionid为key的PairRDD
+		 * 第一，要用actionRDD，获取到一个公共的sessionid为key的PairRDD
 		 * 第二，actionRDD，用在了session聚合环节里面
 		 * 
 		 * sessionid为key的PairRDD，是确定了，在后面要多次使用的

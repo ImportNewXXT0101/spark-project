@@ -18,8 +18,6 @@ import com.xxt.sparkproject.constant.Constants;
  * 比如“张三”、“com.mysql.jdbc.Driver”
  * 所有这些东西，都需要通过常量来封装和使用
  * 
- * @author Administrator
- *
  */
 public class JDBCHelper {
 	

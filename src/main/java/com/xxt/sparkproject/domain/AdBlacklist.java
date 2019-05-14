@@ -1,19 +1,13 @@
 package com.xxt.sparkproject.domain;
 
+import lombok.Data;
+
 /**
  * 广告黑名单
- * @author Administrator
- *
  */
+@Data
 public class AdBlacklist {
 
 	private long userid;
 
-	public long getUserid() {
-		return userid;
-	}
-	public void setUserid(long userid) {
-		this.userid = userid;
-	}
-	
 }
