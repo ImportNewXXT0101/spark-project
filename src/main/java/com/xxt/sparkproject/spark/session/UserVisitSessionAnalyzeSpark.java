@@ -142,8 +142,12 @@ public class UserVisitSessionAnalyzeSpark {
 		 * 重构完以后，actionRDD，就只在最开始，使用一次，用来生成以sessionid为key的RDD
 		 * 
 		 */
+
+		//		获取指定日期范围内的用户行为数据RDD
 		JavaRDD<Row> actionRDD = 
 				SparkUtils.getActionRDDByDateRange(sqlContext, taskParam);
+
+		//		获取sessionid2到访问行为数据的映射的RDD
 		JavaPairRDD<String, Row> sessionid2actionRDD = getSessionid2ActionRDD(actionRDD);
 		
 		/**
@@ -173,8 +177,7 @@ public class UserVisitSessionAnalyzeSpark {
 		
 		// 接着，就要针对session粒度的聚合数据，按照使用者指定的筛选参数进行数据过滤
 		// 相当于我们自己编写的算子，是要访问外面的任务参数对象的
-		// 所以，大家记得我们之前说的，匿名内部类（算子函数），访问外部对象，是要给外部对象使用final修饰的
-		
+
 		// 重构，同时进行过滤和统计
 		Accumulator<String> sessionAggrStatAccumulator = sc.accumulator(
 				"", new SessionAggrStatAccumulator());
@@ -194,12 +197,9 @@ public class UserVisitSessionAnalyzeSpark {
 		
 		/**
 		 * 对于Accumulator这种分布式累加计算的变量的使用，有一个重要说明
-		 * 
 		 * 从Accumulator中，获取数据，插入数据库的时候，一定要，一定要，是在有某一个action操作以后
 		 * 再进行。。。
-		 * 
 		 * 如果没有action的话，那么整个程序根本不会运行。。。
-		 * 
 		 * 是不是在calculateAndPersisitAggrStat方法之后，运行一个action操作，比如count、take
 		 * 不对！！！
 		 * 
@@ -268,10 +268,6 @@ public class UserVisitSessionAnalyzeSpark {
 		 * 
 		 * 		我们如果采用第一种实现方案，那么其实就是代码划分（解耦合、可维护）优先，设计优先
 		 * 		如果采用第二种方案，那么其实就是性能优先
-		 * 
-		 * 		讲了这么多，其实大家不要以为我是在岔开话题，大家不要觉得项目的课程，就是单纯的项目本身以及
-		 * 		代码coding最重要，其实项目，我觉得，最重要的，除了技术本身和项目经验以外；非常重要的一点，就是
-		 * 		积累了，处理各种问题的经验
 		 * 
 		 */
 		
@@ -348,12 +344,12 @@ public class UserVisitSessionAnalyzeSpark {
 		return actionDF.javaRDD();
 	}
 	
-	/**
+	/** todo
 	 * 获取sessionid2到访问行为数据的映射的RDD
 	 * @param actionRDD 
 	 * @return
 	 */
-	public static JavaPairRDD<String, Row> getSessionid2ActionRDD(JavaRDD<Row> actionRDD) {
+	private static JavaPairRDD<String, Row> getSessionid2ActionRDD(JavaRDD<Row> actionRDD) {
 //		return actionRDD.mapToPair(new PairFunction<Row, String, Row>() {
 //
 //			private static final long serialVersionUID = 1L;
@@ -372,7 +368,7 @@ public class UserVisitSessionAnalyzeSpark {
 			@Override
 			public Iterable<Tuple2<String, Row>> call(Iterator<Row> iterator)
 					throws Exception {
-				List<Tuple2<String, Row>> list = new ArrayList<Tuple2<String, Row>>();
+				List<Tuple2<String, Row>> list = new ArrayList<>();
 				
 				while(iterator.hasNext()) {
 					Row row = iterator.next();
@@ -482,7 +478,6 @@ public class UserVisitSessionAnalyzeSpark {
 						// 计算session访问时长（秒）
 						long visitLength = (endTime.getTime() - startTime.getTime()) / 1000; 
 						
-						// 大家思考一下
 						// 我们返回的数据格式，即使<sessionid,partAggrInfo>
 						// 但是，这一步聚合完了以后，其实，我们是还需要将每一行数据，跟对应的用户信息进行聚合
 						// 问题就来了，如果是跟用户信息进行聚合的话，那么key，就不应该是sessionid
@@ -495,8 +490,7 @@ public class UserVisitSessionAnalyzeSpark {
 						// 然后再直接将返回的Tuple的key设置成sessionid
 						// 最后的数据格式，还是<sessionid,fullAggrInfo>
 						
-						// 聚合数据，用什么样的格式进行拼接？
-						// 我们这里统一定义，使用key=value|key=value
+						// 聚合数据， 统一定义，使用key=value|key=value
 						String partAggrInfo = Constants.FIELD_SESSION_ID + "=" + sessionid + "|"
 								+ Constants.FIELD_SEARCH_KEYWORDS + "=" + searchKeywords + "|"
 								+ Constants.FIELD_CLICK_CATEGORY_IDS + "=" + clickCategoryIds + "|"
@@ -877,8 +871,7 @@ public class UserVisitSessionAnalyzeSpark {
 			final JSONObject taskParam,
 			final Accumulator<String> sessionAggrStatAccumulator) {  
 		// 为了使用我们后面的ValieUtils，所以，首先将所有的筛选参数拼接成一个连接串
-		// 此外，这里其实大家不要觉得是多此一举
-		// 其实我们是给后面的性能优化埋下了一个伏笔
+		//  后面的性能优化
 		String startAge = ParamUtils.getParam(taskParam, Constants.PARAM_START_AGE);
 		String endAge = ParamUtils.getParam(taskParam, Constants.PARAM_END_AGE);
 		String professionals = ParamUtils.getParam(taskParam, Constants.PARAM_PROFESSIONALS);

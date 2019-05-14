@@ -36,8 +36,6 @@ import com.xxt.sparkproject.domain.Task;
 
 /**
  * 页面单跳转化率模块spark作业
- * @author Administrator
- *
  */
 public class PageOneStepConvertRateSpark {
 	
