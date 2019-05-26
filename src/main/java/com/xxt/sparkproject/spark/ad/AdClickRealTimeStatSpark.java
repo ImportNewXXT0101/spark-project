@@ -54,7 +54,6 @@ import com.xxt.sparkproject.domain.AdUserClickCount;
 
 /**
  * 广告点击流量实时统计spark作业
- * @author Administrator
  *
  */
 public class AdClickRealTimeStatSpark {

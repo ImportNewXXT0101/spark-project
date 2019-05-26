@@ -6,7 +6,6 @@ import com.xxt.sparkproject.domain.AdUserClickCount;
 
 /**
  * 用户广告点击量DAO接口
- * @author Administrator
  *
  */
 public interface IAdUserClickCountDAO {

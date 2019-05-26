@@ -6,7 +6,6 @@ import com.xxt.sparkproject.domain.AdBlacklist;
 
 /**
  * 广告黑名单DAO接口
- * @author Administrator
  *
  */
 public interface IAdBlacklistDAO {

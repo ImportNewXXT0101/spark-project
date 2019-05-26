@@ -6,7 +6,6 @@ import com.xxt.sparkproject.domain.SessionDetail;
 
 /**
  * Session明细DAO接口
- * @author Administrator
  *
  */
 public interface ISessionDetailDAO {

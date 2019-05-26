@@ -100,13 +100,9 @@ public class UserVisitSessionAnalyzeSpark {
 						IntList.class});   
 		SparkUtils.setMaster(conf);
 		
-		/**
-		 * 比如，获取top10热门品类功能中，二次排序，自定义了一个Key
-		 * 那个key是需要在进行shuffle的时候，进行网络传输的，因此也是要求实现序列化的
-		 * 启用Kryo机制以后，就会用Kryo去序列化和反序列化CategorySortKey
-		 */
-		
+
 		JavaSparkContext sc = new JavaSparkContext(conf);
+
 //		sc.checkpointFile("hdfs://");
 		SQLContext sqlContext = getSQLContext(sc.sc());
 		
@@ -287,8 +283,6 @@ public class UserVisitSessionAnalyzeSpark {
 	 * 获取SQLContext
 	 * 如果是在本地测试环境的话，那么就生成SQLContext对象
 	 * 如果是在生产环境运行的话，那么就生成HiveContext对象
-	 * @param sc SparkContext
-	 * @return SQLContext
 	 */
 	private static SQLContext getSQLContext(SparkContext sc) {
 		boolean local = ConfigurationManager.getBoolean(Constants.SPARK_LOCAL);

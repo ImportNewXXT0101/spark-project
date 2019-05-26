@@ -1,10 +1,6 @@
 package com.xxt.sparkproject.test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -20,18 +16,15 @@ import com.xxt.sparkproject.util.StringUtils;
 
 /**
  * 模拟数据程序
- *
  */
 public class MockData {
 
 	/**
 	 * 模拟数据
-	 * @param sc
-	 * @param sqlContext
 	 */
 	public static void mock(JavaSparkContext sc,
 			SQLContext sqlContext) {
-		List<Row> rows = new ArrayList<Row>();
+		List<Row> rows = new ArrayList<>();
 		
 		String[] searchKeywords = new String[] {"火锅", "蛋糕", "重庆辣子鸡", "重庆小面",
 				"呷哺呷哺", "新辣道鱼火锅", "国贸大厦", "太古商场", "日本料理", "温泉"};
@@ -50,7 +43,9 @@ public class MockData {
 				  
 				for(int k = 0; k < random.nextInt(100); k++) {
 					long pageid = random.nextInt(10);    
-					String actionTime = baseActionTime + ":" + StringUtils.fulfuill(String.valueOf(random.nextInt(59))) + ":" + StringUtils.fulfuill(String.valueOf(random.nextInt(59)));
+					String actionTime = baseActionTime + ":"
+							+ StringUtils.fulfuill(String.valueOf(random.nextInt(59))) + ":"
+							+ StringUtils.fulfuill(String.valueOf(random.nextInt(59)));
 					String searchKeyword = null;
 					Long clickProductId = null;
 					String orderCategoryIds = null;
@@ -84,7 +79,9 @@ public class MockData {
 				}
 			}
 		}
-		
+		/**
+		 * ============================= user_visit_action =====================================
+		 */
 		JavaRDD<Row> rowsRDD = sc.parallelize(rows);
 		
 		StructType schema = DataTypes.createStructType(Arrays.asList(
@@ -110,7 +107,7 @@ public class MockData {
 		}
 		
 		/**
-		 * ==================================================================
+		 * ============================ user_info ======================================
 		 */
 		
 		rows.clear();
@@ -148,7 +145,7 @@ public class MockData {
 		df2.registerTempTable("user_info");  
 		
 		/**
-		 * ==================================================================
+		 * ============================ product_info ======================================
 		 */
 		rows.clear();
 		
@@ -175,7 +172,8 @@ public class MockData {
 			System.out.println(_row);  
 		}
 		
-		df3.registerTempTable("product_info"); 
+		df3.registerTempTable("product_info");
+//		LinkedList
 	}
 	
 }

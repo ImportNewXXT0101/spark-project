@@ -4,7 +4,6 @@ import com.xxt.sparkproject.domain.SessionAggrStat;
 
 /**
  * session聚合统计模块DAO接口
- * @author Administrator
  *
  */
 public interface ISessionAggrStatDAO {

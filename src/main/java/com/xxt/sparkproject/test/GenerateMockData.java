@@ -18,8 +18,6 @@ public class GenerateMockData {
 
 	/**
 	 * 模拟数据
-	 * @param sc
-	 * @param sqlContext
 	 */
 	public static void main(String[] args) { 
 		BufferedWriter bw = null;
@@ -45,7 +43,9 @@ public class GenerateMockData {
 					  
 					for(int k = 0; k < random.nextInt(100); k++) {
 						long pageid = random.nextInt(10);    
-						String actionTime = baseActionTime + ":" + StringUtils.fulfuill(String.valueOf(random.nextInt(59))) + ":" + StringUtils.fulfuill(String.valueOf(random.nextInt(59)));
+						String actionTime = baseActionTime + ":" +
+								StringUtils.fulfuill(String.valueOf(random.nextInt(59))) + ":"
+								+ StringUtils.fulfuill(String.valueOf(random.nextInt(59)));
 						String searchKeyword = null;
 						Long clickProductId = null;
 						String orderCategoryIds = null;

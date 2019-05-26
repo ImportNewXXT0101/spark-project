@@ -6,7 +6,6 @@ import com.xxt.sparkproject.domain.AdClickTrend;
 
 /**
  * 广告点击趋势DAO接口
- * @author Administrator
  *
  */
 public interface IAdClickTrendDAO {

@@ -4,8 +4,6 @@ import com.xxt.sparkproject.domain.Task;
 
 /**
  * 任务管理DAO接口
- * @author Administrator
- *
  */
 public interface ITaskDAO {
 	
