@@ -28,7 +28,7 @@ public class MockData {
 		
 		String[] searchKeywords = new String[] {"火锅", "蛋糕", "重庆辣子鸡", "重庆小面",
 				"呷哺呷哺", "新辣道鱼火锅", "国贸大厦", "太古商场", "日本料理", "温泉"};
-		String date = DateUtils.getTodayDate();
+		String date = DateUtils.getTestDate();
 		String[] actions = new String[]{"search", "click", "order", "pay"};
 		Random random = new Random();
 		
@@ -100,10 +100,10 @@ public class MockData {
 				DataTypes.createStructField("city_id", DataTypes.LongType, true)));
 		
 		DataFrame df = sqlContext.createDataFrame(rowsRDD, schema);
-		
+		df.show();
 		df.registerTempTable("user_visit_action");  
 		for(Row _row : df.take(1)) {
-			System.out.println(_row);  
+			System.out.println("user_visit_action "+_row);
 		}
 		
 		/**
@@ -139,10 +139,11 @@ public class MockData {
 		
 		DataFrame df2 = sqlContext.createDataFrame(rowsRDD, schema2);
 		for(Row _row : df2.take(1)) {
-			System.out.println(_row);  
+			System.out.println("user_info "+_row);
 		}
 		
-		df2.registerTempTable("user_info");  
+		df2.registerTempTable("user_info");
+		df2.show();
 		
 		/**
 		 * ============================ product_info ======================================
@@ -169,10 +170,11 @@ public class MockData {
 		
 		DataFrame df3 = sqlContext.createDataFrame(rowsRDD, schema3);
 		for(Row _row : df3.take(1)) {
-			System.out.println(_row);  
+			System.out.println("product_info "+_row);
 		}
 		
 		df3.registerTempTable("product_info");
+		df3.show();
 //		LinkedList
 	}
 	

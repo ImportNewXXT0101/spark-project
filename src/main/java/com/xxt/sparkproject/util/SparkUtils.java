@@ -73,12 +73,12 @@ public class SparkUtils {
 		String sql = 
 				"select * "
 				+ "from user_visit_action "
-				+ "where date>='" + startDate + "' "
-				+ "and date<='" + endDate + "'";  
+				+ "where city_id>='" + 1 + "' "
+				+ "and city_id<='" + 7 + "'";
 //				+ "and session_id not in('','','')"
 		
 		DataFrame actionDF = sqlContext.sql(sql);
-		
+		actionDF.show();
 		/**
 		 * 这里就很有可能发生上面说的问题
 		 * 比如说，Spark SQl默认就给第一个stage设置了20个task，但是根据你的数据量以及算法的复杂度

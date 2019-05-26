@@ -2,6 +2,7 @@ package com.xxt.sparkproject.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -96,6 +97,14 @@ public class DateUtils {
 	 */
 	public static String getTodayDate() {
 		return DATE_FORMAT.format(new Date());  
+	}
+
+	/**
+	 * 获取当天日期（yyyy-MM-dd）
+	 * @return 当天日期
+	 */
+	public static String getTestDate() {
+		return LocalDate.of(2019,4,2).toString();
 	}
 	
 	/**
